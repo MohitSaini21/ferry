@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Book ferry tickets across Andaman Islands seamlessly with Makruzz."
+    />
+    <meta name="author" content="Makruzz Team" />
+
+    <!-- ✅ Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Makruzz Ferry Booking System</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link href="/css/styles.css" rel="stylesheet" />
+
+    <style>
+      header {
+  background-image: url('/assets/ferryimage.jpeg'); /* Replace with your image path */
+  background-size: cover;       /* Make image cover the full area */
+  background-position: center;  /* Center the image */
+  background-repeat: no-repeat; /* Prevent tiling */
+  color: white;                 /* Ensure text stays visible */
+  padding: 100px 0;             /* Add vertical spacing */
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 60px 0; /* Reduce padding on smaller screens */
+  }
+}
+
+    </style>
+  </head>
+  <body id="page-top">
+    <!-- Navigation -->
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
+      id="mainNav"
+    >
+      <div class="container px-4">
+        <a class="navbar-brand" href="#page-top">Makruzz Booking</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#about">Why Makruzz</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#bookings">Booking</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#services">Ferry Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact Support</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-primary bg-gradient text-white">
+      <div class="container px-4 text-center   header" >
+        <h1 class="fw-bolder">Welcome to Makruzz Booking</h1>
+        <p class="lead">
+          Fast, reliable, and easy ferry booking across the Andaman Islands
+        </p>
+        <a class="btn btn-lg btn-light" href="#about">Explore More</a>
+      </div>
+    </header>
+
+    <!-- Forms -->
+
+    <div class="container mt-4">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button
+            class="nav-link active"
+            id="nav-home-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-home"
+            type="button"
+            role="tab"
+            aria-controls="nav-home"
+            aria-selected="true"
+          >
+            Single Trip
+          </button>
+          <button
+            class="nav-link"
+            id="nav-profile-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-profile"
+            type="button"
+            role="tab"
+            aria-controls="nav-profile"
+            aria-selected="false"
+          >
+            Multi Trip
+          </button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div
+          class="tab-pane fade show active"
+          id="nav-home"
+          role="tabpanel"
+          aria-labelledby="nav-home-tab"
+          tabindex="0"
+        >
+          <div class="container mt-2">
+            <form class="row g-2 align-items-center" id="singleTripForm">
+            <!-- From Dropdown -->
+    <div class="col-auto">
+        <select class="form-select" name="from" required>
+          <% sectors.forEach((sector, index) => { %>
+            <option 
+              value="<%= sector.id%>" 
+              <%= index === 0 ? "selected" : "" %>>
+              <%= sector.title %> (<%= sector.code %>)
+            </option>
+          <% }) %>
+        </select>
+      </div>
+  
+      <!-- To Dropdown -->
+      <div class="col-auto">
+        <select class="form-select" name="to" required>
+          <% sectors.forEach((sector, index) => { %>
+            <option 
+              value="<%= sector.id %>" 
+              <%= index === sectors.length - 1 ? "selected" : "" %>>
+              <%= sector.title %> (<%= sector.code %>)
+            </option>
+          <% }) %>
+        </select>
+      </div>
+              <!-- Date -->
+              <div class="col-auto">
+                <input type="date" id="date" class="form-control" />
+              </div>
+
+              <!-- Passengers -->
+              <div class="col-auto">
+                <input
+                  type="number"
+                  id="passengers"
+                  class="form-control"
+                  min="1"
+                  placeholder="Passengers"
+                />
+              </div>
+
+              <!-- Submit -->
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary mt-4">
+                Check Out Schedule 
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="nav-profile"
+          role="tabpanel"
+          aria-labelledby="nav-profile-tab"
+          tabindex="0"
+        >
+          Mulit Trip Form
+        </div>
+      </div>
+    </div>
+    <!-- Forms -->
+
+    <!-- ferry -->
+     <div class="container mt-2" id="ferry">
+
+
+      
+     </div>
+    <!-- ferry -->
+
+
+    <!-- Booking Section  -->
+    <section id="bookings">
+      <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+          <div class="col-lg-8">
+            <h2>Bookings</h2>
+            <div class="container my-4"  id="allBookings">
+   
+              
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- About section -->
+    <section id="about">
+      <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+          <div class="col-lg-8">
+            <h2>Why choose Makruzz?</h2>
+            <p class="lead">
+              Makruzz is the most trusted ferry service provider in the Andaman
+              Islands. With our new booking platform, you can:
+            </p>
+            <ul>
+              <li>Search and compare ferry routes easily</li>
+              <li>Book tickets online with secure payments</li>
+              <li>Get instant confirmations and updates</li>
+              <li>Experience smooth and safe journeys across islands</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services section -->
+    <section class="bg-light" id="services">
+      <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+          <div class="col-lg-8">
+            <h2>Ferry Routes We Serve</h2>
+            <p class="lead">
+              We connect the most popular destinations in Andaman:
+            </p>
+            <ul>
+              <li>Port Blair ↔ Havelock (Swaraj Dweep)</li>
+              <li>Havelock ↔ Neil Island (Shaheed Dweep)</li>
+              <li>Port Blair ↔ Neil Island</li>
+              <li>Other seasonal and special routes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact section -->
+    <section id="contact">
+      <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+          <div class="col-lg-8">
+            <h2>Need Help?</h2>
+            <p class="lead">
+              Reach out to our 24/7 customer support team for any queries
+              regarding your ferry booking, cancellations, or general questions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container px-4">
+        <p class="m-0 text-center text-white">
+          &copy; Makruzz Ferry Booking System 2025
+        </p>
+      </div>
+    </footer>
+
+
+    
+
+<!-- Include Bootstrap 5 (required) -->
+<script src="/js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function populateModal(ship_id) {
+    // Get the schedule data from localStorage
+    const allSchedulesRaw = JSON.parse(localStorage.getItem("data"));
+    const allSchedules = allSchedulesRaw?.data || allSchedulesRaw; // support both data formats
+
+    if (!allSchedules || !Array.isArray(allSchedules)) {
+      console.log("No schedule data found in localStorage.");
+      return;
+    }
+
+    // Filter schedules for the given ship_id
+    const filtered = allSchedules.filter(schedule => schedule.ship_id === ship_id.toString());
+
+    if (filtered.length === 0) {
+      alert("No data found for this ship ID.");
+      return;
+    }
+
+    // Group by ship_class_title
+    const classes = {
+      Premium: filtered.find(item => item.ship_class_title.toLowerCase() === "premium"),
+      Deluxe: filtered.find(item => item.ship_class_title.toLowerCase() === "deluxe"),
+      Royal: filtered.find(item => item.ship_class_title.toLowerCase() === "royal"),
+    };
+
+
+    
+function createOptions(classes) {
+  let options = '';
+  ['Premium', 'Deluxe', 'Royal'].forEach(type => {
+    if (classes[type]) {
+
+      const { id,  ship_class_id, ship_class_price } = classes[type];
+      const value = `${id}|${ship_class_id}|${ship_class_price}`;
+      options += `<option value="${value}">${type}</option>`;
+
+      
+    }
+  });
+  return options;
+}
+
+
+    // Helper to build card HTML
+    const createCard = (label, data) => {
+      if (!data) {
+        return `
+          <div class="col">
+            <div class="card border-secondary h-100">
+              <div class="card-header">${label}</div>
+              <div class="card-body text-muted">
+                <h5 class="card-title">Not Available</h5>
+                <p class="card-text">This class is not available for this ship.</p>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      return `
+        <div class="col">
+          <div class="card border-primary h-100">
+            <div class="card-header">${label}</div>
+            <div class="card-body text-primary">
+              <h5 class="card-title">${data.ship_title} (${data.display_name})</h5>
+              <p class="card-text">
+                Route: ${data.source_name} ➜ ${data.destination_name}<br>
+                Departure: ${data.departure_time} | Arrival: ${data.arrival_time}<br>
+                Price: ₹${data.ship_class_price}<br>
+                Meal: ${data.is_meal === 'Y' ? 'Included' : 'Not Included'}<br>
+                Seats: ${data.seat}<br>
+                GST: ₹${(data.cgst_amount + data.ugst_amount).toFixed(2)}<br>
+                PSF: ₹${data.psf}
+              </p>
+            </div>
+          </div>
+        </div>`;
+    };
+
+    // Modal template with cards injected
+    const modalHTML = `
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Choose Your Classs</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="container text-center my-3">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                  ${createCard("Premium", classes.Premium)}
+                  ${createCard("Deluxe", classes.Deluxe)}
+                  ${createCard("Royal", classes.Royal)}
+                </div>
+              </div>
+
+
+ 
+              
+ <select class="form-select" aria-label="Select class" id="classSelect">
+            <option selected disabled>Choose your class</option>
+             ${createOptions(classes)}
+          </select>
+
+          
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="hideModal()">Close</button>
+                <button type="button" class="btn btn-secondary" onclick="Redirect()">Procedd</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    // Remove previous modal
+    const oldModal = document.getElementById('staticBackdrop');
+    if (oldModal) {
+      oldModal.remove();
+    }
+
+    // Append new modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Show the modal
+    showModal();
+  }
+
+  // These must be global so the modal button can call hideModal()
+  function showModal() {
+    const modalEl = document.getElementById('staticBackdrop');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  }
+
+  function hideModal() {
+    const modalEl = document.getElementById('staticBackdrop');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+  }
+</script>
+
+<script>
+  const form = document.getElementById("singleTripForm");
+
+  // Function to check if all required fields are filled
+  function isFormComplete() {
+    const from = form.elements["from"].value.trim();
+    const to = form.elements["to"].value.trim();
+    const date = document.getElementById("date").value.trim();
+    const passengers = document.getElementById("passengers").value.trim();
+
+    return from && to && date && passengers;
+  }
+
+  // Function to fetch schedule
+  async function fetchScheduleIfComplete() {
+    if (!isFormComplete()) return;
+
+    const formData = {
+      trip_type: "single_trip",
+      from: form.elements["from"].value,
+      to: form.elements["to"].value,
+      date: document.getElementById("date").value,
+      passengers: document.getElementById("passengers").value,
+    };
+
+    localStorage.setItem("lastInput", JSON.stringify(formData));
+
+    try {
+      const response = await fetch("/fetchSchedule", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const result = await response.json();
+      alert(result.message)
+     
+      if (result.status === "success") {
+        localStorage.setItem("data", JSON.stringify(result.data));
+        appendFerry(); // Call your UI update function
+      }else{
+        const container = document.getElementById("ferry");
+        container.innerHTML="";
+      }
+
+    } catch (error) {
+      console.error("Error fetching schedule:", error.message);
+    }
+  }
+
+  // Listen for any change inside the form
+  form.addEventListener("input", function () {
+    fetchScheduleIfComplete();
+  });
+
+  // Optional: Still handle form submit manually
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    fetchScheduleIfComplete();
+  });
+</script>
+
+
+    <script>
+
+
+window.onload = function () {
+
+ appendFerry();
+ appendBookings();
+};
+
+function appendFerry() {
+  const data = JSON.parse(localStorage.getItem("data"));
+  const lastInput=JSON.parse(localStorage.getItem("lastInput"));
+
+  if(lastInput){
+    const {date,passengers}=lastInput;
+    if(date && passengers){
+    document.getElementById("date").value=date;
+    document.getElementById("passengers").value=passengers;
+  }
+  }
+  
+
+  
+
+
+  
+
+  if (!data || !data.data || data.data.length === 0) {
+    console.log("You have not searched for any ferry schedule yet.");
+    return;
+  }
+
+  const container = document.getElementById("ferry");
+  container.innerHTML="";
+  const renderedShips = new Set(); // To track already-rendered ship_ids
+
+  for (let i = 0; i < data.data.length; i++) {
+    const ferry = data.data[i];
+
+    // Skip if ship_id is already rendered
+    if (renderedShips.has(ferry.ship_id)) {
+      continue;
+    }
+
+    renderedShips.add(ferry.ship_id);
+
+    // Use first image or placeholder
+    const imageUrl = ferry.images && ferry.images.length > 0 
+      ? ferry.images[0] 
+      : "/assets/ferryimage.jpeg";
+
+    const cardHTML = `
+      <div class="card mb-3" style="max-width: 100%;" id="ship-${ferry.ship_id}">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="${imageUrl}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="${ferry.ship_title}">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">${ferry.display_name} (${ferry.ship_title})</h5>
+              <p class="card-text mb-1">
+                <strong>Route:</strong> ${ferry.source_name} 
+                <span class="mx-2">→</span> 
+                ${ferry.destination_name}
+              </p>
+              <p class="card-text mb-1">
+                <strong>Departure:</strong> ${ferry.departure_time} | 
+                <strong>Arrival:</strong> ${ferry.arrival_time}
+              </p>
+              <p class="card-text mb-1">
+                <strong>Operational:</strong> ${ferry.from_date} 
+                <span class="mx-2">→</span> 
+                ${ferry.to_date}
+              </p>
+              <p class="card-text mb-1">
+                <strong>Booking:</strong> ${ferry.booking_start_date} 
+                <span class="mx-2">→</span> 
+                ${ferry.booking_end_date}
+              </p>
+   
+              
+      
+              <br>
+
+              
+
+<button type="button"  onclick="populateModal(${ferry.ship_id})" class="btn btn-outline-primary">Pick up Ferry</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    container.insertAdjacentHTML("beforeend", cardHTML);
+  }
+}
+
+
+
+
+function Redirect() {
+  const select = document.getElementById("classSelect");
+  const selectedValue = select.value;
+  console.log(JSON.parse(localStorage.getItem('lastInput')));
+  const {date,passengers}=JSON.parse(localStorage.getItem('lastInput'))
+
+  
+
+  
+
+  
+
+  if (!selectedValue || !date || !passengers) {
+    alert("Please fill in all fields before proceeding.");
+    return;
+  }
+
+  // Split by "|"
+  const [id, ship_class_id, ship_class_price] = selectedValue.split("|");
+
+  // Validate split values
+  if (!id || !ship_class_id || !ship_class_price) {
+    alert("Invalid class selection. Please try again.");
+    return;
+  }
+
+  // Redirect
+  window.location.href = `/savePassengers/${passengers}/${id}/${date}/${ship_class_id}/${ship_class_price}`;
+}
+
+function appendBookings() {
+  const bookings = JSON.parse(localStorage.getItem("bookings"));
+  const data = JSON.parse(localStorage.getItem("data"));
+  const container = document.getElementById("allBookings");
+
+  // Clear previous content
+  container.innerHTML = "";
+
+  // If no bookings
+  if (!bookings || bookings.length === 0) {
+    container.innerHTML = `
+      <div class="alert alert-info text-center" role="alert">
+        You have not made any bookings so far. Go explore and fill up the form to get started!
+      </div>
+    `;
+    return;
+  }
+
+  if (!data.data || !Array.isArray(data.data)) {
+    container.innerHTML = `
+      <div class="alert alert-danger text-center" role="alert">
+        Schedule data not found. Please fetch the schedule again.
+      </div>
+    `;
+    return;
+  }
+
+  
+
+  bookings.forEach((booking) => {
+    const schedule = data.data.find(item => item.id == booking.schedule_id);
+
+    if (schedule) {
+
+      
+      const cardHTML = `
+      <div class="card mb-3 shadow-sm" id="booking-${booking.booking_id}">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <h5 class="card-title">${schedule.ship_title || "Ferry"} - ${schedule.display_name}</h5>
+              <h6 class="card-subtitle text-muted mb-2">
+                From: ${schedule.source_name} ➡️ To: ${schedule.destination_name} <br>
+                Departure: ${schedule.departure_time} | Arrival: ${schedule.arrival_time}
+              </h6>
+              <p class="card-text mb-1">
+                Travel Date: <strong>${booking.travel_date}</strong> <br>
+                Trip Type: ${booking.booking_type || "N/A"} <br>
+                Selected Class: <strong>${schedule.ship_class_title}</strong> <br>
+                Class Price: ${schedule.ship_class_price}       <br>
+                no_of_passenger : ${booking.no_of_passenger }
+              </p>
+              <p class="card-text mb-1">
+                CGST (9%): ${schedule.cgst_amount} <br>
+                UGST (9%): ${schedule.ugst_amount} <br>
+                PSF: ${schedule.psf} <br>
+                Total Price per Passenger: <strong>${
+                  parseFloat(schedule.ship_class_price) +
+                  parseFloat(schedule.cgst_amount) +
+                  parseFloat(schedule.ugst_amount) +
+                  parseFloat(schedule.psf)
+                }</strong>
+                <br>
+                Total Price: <strong>${
+            (      parseFloat(schedule.ship_class_price) +
+                  parseFloat(schedule.cgst_amount) +
+                  parseFloat(schedule.ugst_amount) +
+                  parseFloat(schedule.psf))*parseInt(booking.no_of_passenger)
+                }</strong>
+              </p>
+            </div>
+   <div class="col-md-4 text-md-end text-start mt-3 mt-md-0">
+          ${
+            booking.pnr
+              ? `
+                <button class="btn btn-success mb-2" onclick="downloadTicket('${booking.booking_id}')">Download Ticket</button><br>
+                <button class="btn btn-danger mb-2" onclick="cancelBooking(${booking.pnr})">Cancel Booking</button>
+              `
+              : `
+                <button class="btn btn-primary mb-2" onclick="confirmBooking(${booking.booking_id})">Confirm Booking</button><br>
+              `
+          }
+        </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    container.insertAdjacentHTML("beforeend", cardHTML);
+  
+    } else {
+      console.warn("No matching schedule found for booking:", booking);
+    }
+  });
+
+}
+function confirmBooking(booking_id) {
+  fetch(`/confirmBooking/${booking_id}`, {
+    method: "POST",
+  })
+  .then(response => response.json())
+  .then(result => {
+    console.log(result);
+
+    // Step 1: Get all bookings from localStorage
+    const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+    // Step 2: Find the index of the booking to update
+    const index = bookings.findIndex(item => item.booking_id == booking_id);
+
+    if (index !== -1) {
+      // Step 3: Update the PNR
+      bookings[index].pnr = result.data.data.pnr;
+      console.log(bookings[index])
+
+      // Step 4: Save updated bookings back to localStorage
+      localStorage.setItem("bookings", JSON.stringify(bookings));
+      
+
+      // Optional: re-render UI if needed
+      // appendBookings(); // if you want to reflect the PNR in the card
+
+      appendBookings()
+    } else {
+      console.warn("Booking not found in localStorage for ID:", booking_id);
+    }
+
+    alert(result.message); // Show backend message
+  })
+  .catch(error => {
+    console.error("Error confirming booking:", error);
+    alert("Something went wrong while confirming your booking.");
+  });
+}
+
+function downloadTicket(booking_id) {
+  fetch(`/downlaod/${booking_id}`, {
+    method: "POST",
+  })
+  .then(response => response.json())
+  .then(result => {
+
+    console.log(result.data)
+    downloadBase64PDF(result.data)
+    
+    
+
+    
+  })
+  .catch(error => {
+    console.error("Error confirming booking:", error);
+    alert("Something went wrong while confirming your booking.");
+  });
+}
+
+
+
+
+function downloadBase64PDF(base64String, filename = "ticket.pdf") {
+  // Step 1: Convert base64 to byte array
+  const byteCharacters = atob(base64String);
+  const byteNumbers = Array.from(byteCharacters, char => char.charCodeAt(0));
+  const byteArray = new Uint8Array(byteNumbers);
+
+  // Step 2: Create a Blob with PDF type
+  const blob = new Blob([byteArray], { type: "application/pdf" });
+
+  // Step 3: Create a temporary anchor tag and click it to trigger download
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+
+  // Step 4: Clean up
+  document.body.removeChild(link);
+  URL.revokeObjectURL(link.href);
+}
+
+
+
+
+      </script>
+      
+      
+      
+  </body>
+</html>
