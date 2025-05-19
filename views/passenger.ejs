@@ -19,6 +19,61 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/css/styles.css" rel="stylesheet" />
     <style>
+      /* General Container */
+.payment-summary {
+  max-height: 450px; /* Set a max-height for the container to prevent excessive height */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+  padding: 10px;
+}
+
+/* Tighten the spacing of details */
+.payment-summary p {
+  margin-bottom: 0.5rem;
+}
+
+/* Reduce padding in the summary container */
+.payment-summary .border {
+  padding: 1rem;
+}
+
+/* Collapsible section for each passenger's details */
+.payment-summary .passenger-details {
+  display: none;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+/* Show/Hide when the passenger item is clicked */
+.payment-summary .passenger-item.active .passenger-details {
+  display: block;
+}
+
+/* Button style for expanding details */
+.payment-summary .expand-btn {
+  font-size: 12px;
+  color: #007bff;
+  cursor: pointer;
+  text-align: center;
+  padding-top: 5px;
+}
+
+/* Mobile responsive for small screens */
+@media (max-width: 576px) {
+  .payment-summary .border {
+    padding: 0.8rem;
+  }
+
+  .payment-summary .step-title {
+    font-size: 14px;
+  }
+
+  .payment-summary h4 {
+    font-size: 16px;
+  }
+}
+
+    </style>
+    <style>
       .step {
         flex: 1;
         position: relative;
@@ -71,6 +126,8 @@
         flex-direction: column;
         gap: 2rem;
         position: relative;
+
+        height: 100%; /* Full height of parent */
       }
 
       .step-item {
@@ -125,6 +182,8 @@
       .step-item.completed::before {
         background-color: #198754;
       }
+
+      
     </style>
   </head>
   <body id="page-top">
@@ -357,7 +416,7 @@
         <!-- Stepper Column -->
         <div class="col-lg-6">
           <div class="vertical-stepper">
-            <div class="step-item completed" id="bookStep">
+            <div class="step-item" id="bookStep">
               <div class="step-marker">1</div>
               <div class="step-details">
                 <h5 class="step-title">Booking</h5>
@@ -390,7 +449,7 @@
         </div>
 
         <!-- Payment Column -->
-        <div class="col-lg-6">
+        <div class="col-lg-6" id="paymentCol">
           <div class="border rounded p-4 h-100 shadow-sm">
             <h4 class="mb-3">Payment Summary</h4>
             <p class="mb-2">
@@ -548,6 +607,7 @@
                 if (parts.length >= 3 && parts[1] === "savePassengers") {
                   no_of_passenger = parseInt(parts[2]);
                   console.log("No. of passengers:", no_of_passenger);
+                  console.log("schedule Id :", parts[3]);
                 } else {
                   console.warn("URL structure is unexpected or invalid.");
                 }
@@ -617,6 +677,87 @@
             alert("Something went wrong while confirming your booking.");
           });
       }
+    </script>
+
+    <script>
+      function appendPaymentCol() {
+        const path = window.location.pathname;
+        const parts = path.split("/");
+
+        if (parts.length >= 7 && parts[1] === "savePassengers") {
+          const no_of_passenger = parseInt(parts[2]);
+          const schedule_id = parts[3];
+          const travel_date = parts[4];
+          const class_id = parts[5];
+          const base_fare = parseFloat(parts[6]);
+
+          const allSchedulesRaw = JSON.parse(localStorage.getItem("data"));
+          const schedule = allSchedulesRaw.data.find(
+            (data) => data.id == schedule_id
+          );
+
+          if (!schedule) {
+            console.warn("Schedule not found for ID:", schedule_id);
+            return;
+          }
+
+          const cgst = parseFloat(schedule.cgst_amount);
+          const ugst = parseFloat(schedule.ugst_amount);
+          const psf = parseFloat(schedule.psf);
+          const taxPerPassenger = cgst + ugst;
+          const totalPerPassenger = base_fare + taxPerPassenger + psf;
+          const totalAmount = totalPerPassenger * no_of_passenger;
+
+          // Clear existing payment col if any
+          document.getElementById("paymentCol").innerHTML = "";
+
+          const paymentHTML = `
+      <div class="payment-summary border rounded shadow-sm">
+  <h4 class="mb-3">Payment Summary</h4>
+  <p class="mb-2">Ferry Route: <strong>${schedule.source_name} to ${schedule.destination_name}</strong></p>
+  <p class="mb-2">Passengers: <strong>${no_of_passenger} Adult(s)</strong></p>
+  <p class="mb-2">Date: <strong>${travel_date}</strong></p>
+  <hr />
+  
+  <!-- Passenger Details (Collapsed by default) -->
+  ${Array.from({ length: no_of_passenger })
+    .map(
+      (_, i) => `
+    <div class="passenger-item">
+      <p class="mb-1"><strong>Passenger ${i + 1}</strong></p>
+      <div class="passenger-details">
+        <p class="mb-1">Base Fare: ₹${base_fare.toFixed(2)}</p>
+        <p class="mb-1">CGST (9%): ₹${cgst.toFixed(2)}</p>
+        <p class="mb-1">UGST (9%): ₹${ugst.toFixed(2)}</p>
+        <p class="mb-1">PSF: ₹${psf.toFixed(2)}</p>
+        <strong>Total: ₹${totalPerPassenger.toFixed(2)}</strong>
+      </div>
+      <span class="expand-btn" onclick="toggleDetails(${i})">Show Details</span>
+    </div>
+  `).join("")}
+
+  <hr />
+  <h5 class="text-end">Grand Total: ₹${totalAmount.toFixed(2)}</h5>
+  <button class="btn btn-success mt-3 w-100" onclick="triggerContactFormSubmit()">Proceed to Pay</button>
+</div>
+
+      `;
+
+          document.getElementById("paymentCol").innerHTML = paymentHTML;
+        } else {
+          console.warn("Invalid URL structure for payment section");
+        }
+      }
+
+      window.onload = () => {
+        appendPaymentCol();
+      };
+
+      function toggleDetails(index) {
+  const passengerItem = document.querySelectorAll('.passenger-item')[index];
+  passengerItem.classList.toggle('active');
+}
+
     </script>
   </body>
 </html>
