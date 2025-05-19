@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Book ferry tickets across Andaman Islands seamlessly with Makruzz."
+    />
+    <meta name="author" content="Makruzz Team" />
+
+    <!-- ✅ Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Makruzz Ferry Booking System</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <link href="/css/styles.css" rel="stylesheet" />
+
+    <style>
+      header {
+        background-image: url("/assets/ferryimage.jpeg"); /* Replace with your image path */
+        background-size: cover; /* Make image cover the full area */
+        background-position: center; /* Center the image */
+        background-repeat: no-repeat; /* Prevent tiling */
+        color: white; /* Ensure text stays visible */
+        padding: 100px 0; /* Add vertical spacing */
+        position: relative;
+      }
+
+      @media (max-width: 768px) {
+        header {
+          padding: 60px 0; /* Reduce padding on smaller screens */
+        }
+      }
+
+      .step {
+    flex: 1;
+    position: relative;
+  }
+
+  .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #dee2e6;
+    color: #6c757d;
+    line-height: 40px;
+    margin: 0 auto;
+    font-weight: bold;
+  }
+
+  .label {
+    margin-top: 8px;
+    font-size: 0.9rem;
+  }
+
+  .step.completed .circle {
+    background-color: #198754; /* Bootstrap's green */
+    color: white;
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background-color: #dee2e6;
+    z-index: -1;
+  }
+
+  .step:last-child::after {
+    display: none;
+  }
+
+  .step.completed::after {
+    background-color: #198754;
+  }
+    </style>
+  </head>
+  <body id="page-top">
+
+    
+    <!-- Navigation -->
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
+      id="mainNav"
+    >
+      <div class="container px-4">
+        <a class="navbar-brand" href="#page-top">Makruzz Booking</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#about">Why Makruzz</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#services">Ferry Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact Support</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-primary bg-gradient text-white">
+      <div class="container px-4 text-center header">
+        <h1 class="fw-bolder">Welcome to Makruzz Booking</h1>
+        <p class="lead">
+          Fast, reliable, and easy ferry booking across the Andaman Islands
+        </p>
+        <a class="btn btn-lg btn-light" href="#about">Explore More</a>
+      </div>
+    </header>
+
+    <!-- Steeper -->
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+        <div class="step text-center  completed">
+          <div class="circle">1</div>
+          <div class="label">Fill up Form Accordingly</div>
+        </div>
+        <div class="step text-center">
+          <div class="circle">2</div>
+          <div class="label">Pick up Suitable Ferry</div>
+        </div>
+        <div class="step text-center">
+          <div class="circle">3</div>
+          <div class="label">Make Payment and Recieve Ticket</div>
+        </div>
+      
+        
+      </div>
+
+    <!-- ferry -->
+    <div class="container mt-2" id="ferry"></div>
+    <!-- ferry -->
+
+    <!-- About section -->
+    <section id="about">
+      <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+          <div class="col-lg-8">
+            <h2>Why choose Makruzz?</h2>
+            <p class="lead">
+              Makruzz is the most trusted ferry service provider in the Andaman
+              Islands. With our new booking platform, you can:
+            </p>
+            <ul>
+              <li>Search and compare ferry routes easily</li>
+              <li>Book tickets online with secure payments</li>
+              <li>Get instant confirmations and updates</li>
+              <li>Experience smooth and safe journeys across islands</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services section -->
+    <section class="bg-light" id="services">
+      <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+          <div class="col-lg-8">
+            <h2>Ferry Routes We Serve</h2>
+            <p class="lead">
+              We connect the most popular destinations in Andaman:
+            </p>
+            <ul>
+              <li>Port Blair ↔ Havelock (Swaraj Dweep)</li>
+              <li>Havelock ↔ Neil Island (Shaheed Dweep)</li>
+              <li>Port Blair ↔ Neil Island</li>
+              <li>Other seasonal and special routes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact section -->
+    <section id="contact">
+      <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+          <div class="col-lg-8">
+            <h2>Need Help?</h2>
+            <p class="lead">
+              Reach out to our 24/7 customer support team for any queries
+              regarding your ferry booking, cancellations, or general questions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container px-4">
+        <p class="m-0 text-center text-white">
+          &copy; Makruzz Ferry Booking System 2025
+        </p>
+      </div>
+    </footer>
+
+    <!-- Include Bootstrap 5 (required) -->
+    <script src="/js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      function populateModal(ship_id) {
+        // Get the schedule data from localStorage
+        const allSchedulesRaw = JSON.parse(localStorage.getItem("data"));
+        const allSchedules = allSchedulesRaw?.data || allSchedulesRaw; // support both data formats
+
+        if (!allSchedules || !Array.isArray(allSchedules)) {
+          console.log("No schedule data found in localStorage.");
+          return;
+        }
+
+        // Filter schedules for the given ship_id
+        const filtered = allSchedules.filter(
+          (schedule) => schedule.ship_id === ship_id.toString()
+        );
+
+        if (filtered.length === 0) {
+          alert("No data found for this ship ID.");
+          return;
+        }
+
+        // Group by ship_class_title
+        const classes = {
+          Premium: filtered.find(
+            (item) => item.ship_class_title.toLowerCase() === "premium"
+          ),
+          Deluxe: filtered.find(
+            (item) => item.ship_class_title.toLowerCase() === "deluxe"
+          ),
+          Royal: filtered.find(
+            (item) => item.ship_class_title.toLowerCase() === "royal"
+          ),
+        };
+
+        function createOptions(classes) {
+          let options = "";
+          ["Premium", "Deluxe", "Royal"].forEach((type) => {
+            if (classes[type]) {
+              const { id, ship_class_id, ship_class_price } = classes[type];
+              const value = `${id}|${ship_class_id}|${ship_class_price}`;
+              options += `<option value="${value}">${type}</option>`;
+            }
+          });
+          return options;
+        }
+
+        // Helper to build card HTML
+        const createCard = (label, data) => {
+          if (!data) {
+            return `
+          <div class="col">
+            <div class="card border-secondary h-100">
+              <div class="card-header">${label}</div>
+              <div class="card-body text-muted">
+                <h5 class="card-title">Not Available</h5>
+                <p class="card-text">This class is not available for this ship.</p>
+              </div>
+            </div>
+          </div>`;
+          }
+
+          return `
+        <div class="col">
+          <div class="card border-primary h-100">
+            <div class="card-header">${label}</div>
+            <div class="card-body text-primary">
+              <h5 class="card-title">${data.ship_title} (${
+            data.display_name
+          })</h5>
+              <p class="card-text">
+                Route: ${data.source_name} ➜ ${data.destination_name}<br>
+                Departure: ${data.departure_time} | Arrival: ${
+            data.arrival_time
+          }<br>
+                Price: ₹${data.ship_class_price}<br>
+                Meal: ${data.is_meal === "Y" ? "Included" : "Not Included"}<br>
+                Seats: ${data.seat}<br>
+                CGST + UGST: ₹${(data.cgst_amount + data.ugst_amount).toFixed(2)}<br>
+                PSF: ₹${data.psf}
+              </p>
+            </div>
+          </div>
+        </div>`;
+        };
+
+        // Modal template with cards injected
+        const modalHTML = `
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Choose Your Classs</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="container text-center my-3">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                  ${createCard("Premium", classes.Premium)}
+                  ${createCard("Deluxe", classes.Deluxe)}
+                  ${createCard("Royal", classes.Royal)}
+                </div>
+              </div>
+
+
+ 
+              
+ <select class="form-select" aria-label="Select class" id="classSelect">
+            <option selected disabled>Choose your class</option>
+             ${createOptions(classes)}
+          </select>
+
+          
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="hideModal()">Close</button>
+                <button type="button" class="btn btn-secondary" onclick="Redirect()">Procedd</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+        // Remove previous modal
+        const oldModal = document.getElementById("staticBackdrop");
+        if (oldModal) {
+          oldModal.remove();
+        }
+
+        // Append new modal to body
+        document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+        // Show the modal
+        showModal();
+      }
+
+      // These must be global so the modal button can call hideModal()
+      function showModal() {
+        const modalEl = document.getElementById("staticBackdrop");
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+      }
+
+      function hideModal() {
+        const modalEl = document.getElementById("staticBackdrop");
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+      }
+    </script>
+
+    <script>
+      window.onload = function () {
+        appendFerry();
+ 
+        
+      };
+
+      function appendFerry() {
+        const data = JSON.parse(localStorage.getItem("data"));
+
+        if (!data || !data.data || data.data.length === 0) {
+          console.log("You have not searched for any ferry schedule yet.");
+          return;
+        }
+
+        const container = document.getElementById("ferry");
+        container.innerHTML = "";
+        const renderedShips = new Set(); // To track already-rendered ship_ids
+
+        for (let i = 0; i < data.data.length; i++) {
+          const ferry = data.data[i];
+
+          // Skip if ship_id is already rendered
+          if (renderedShips.has(ferry.ship_id)) {
+            continue;
+          }
+
+          renderedShips.add(ferry.ship_id);
+
+          // Use first image or placeholder
+          const imageUrl =
+            ferry.images && ferry.images.length > 0
+              ? ferry.images[0]
+              : "/assets/ferryimage.jpeg";
+
+          const cardHTML = `
+      <div class="card mb-3" style="max-width: 100%;" id="ship-${ferry.ship_id}">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="${imageUrl}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="${ferry.ship_title}">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">${ferry.display_name} (${ferry.ship_title})</h5>
+              <p class="card-text mb-1">
+                <strong>Route:</strong> ${ferry.source_name} 
+                <span class="mx-2">→</span> 
+                ${ferry.destination_name}
+              </p>
+              <p class="card-text mb-1">
+                <strong>Departure:</strong> ${ferry.departure_time} | 
+                <strong>Arrival:</strong> ${ferry.arrival_time}
+              </p>
+              <p class="card-text mb-1">
+                <strong>Operational:</strong> ${ferry.from_date} 
+                <span class="mx-2">→</span> 
+                ${ferry.to_date}
+              </p>
+              <p class="card-text mb-1">
+                <strong>Booking:</strong> ${ferry.booking_start_date} 
+                <span class="mx-2">→</span> 
+                ${ferry.booking_end_date}
+              </p>
+   
+              
+      
+              <br>
+
+              
+
+<button type="button"  onclick="populateModal(${ferry.ship_id})" class="btn btn-outline-primary">Pick up Ferry</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+          container.insertAdjacentHTML("beforeend", cardHTML);
+        }
+      }
+
+      function Redirect() {
+        const select = document.getElementById("classSelect");
+        const selectedValue = select.value;
+        console.log(JSON.parse(localStorage.getItem("lastInput")));
+        const { date, passengers } = JSON.parse(
+          localStorage.getItem("lastInput")
+        );
+
+        if (!selectedValue || !date || !passengers) {
+          alert("Please fill in all fields before proceeding.");
+          return;
+        }
+
+        // Split by "|"
+        const [id, ship_class_id, ship_class_price] = selectedValue.split("|");
+
+        // Validate split values
+        if (!id || !ship_class_id || !ship_class_price) {
+          alert("Invalid class selection. Please try again.");
+          return;
+        }
+
+        // Redirect
+        window.location.href = `/savePassengers/${passengers}/${id}/${date}/${ship_class_id}/${ship_class_price}`;
+      }
+
+
+      
+      
+     
+      
+    </script>
+  </body>
+</html>

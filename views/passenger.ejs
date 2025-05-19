@@ -18,6 +18,114 @@
     />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/css/styles.css" rel="stylesheet" />
+    <style>
+      .step {
+        flex: 1;
+        position: relative;
+      }
+
+      .circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #dee2e6;
+        color: #6c757d;
+        line-height: 40px;
+        margin: 0 auto;
+        font-weight: bold;
+      }
+
+      .label {
+        margin-top: 8px;
+        font-size: 0.9rem;
+      }
+
+      .step.completed .circle {
+        background-color: #198754; /* Bootstrap's green */
+        color: white;
+      }
+
+      .step::after {
+        content: "";
+        position: absolute;
+        top: 20px;
+        right: -50%;
+        width: 100%;
+        height: 2px;
+        background-color: #dee2e6;
+        z-index: -1;
+      }
+
+      .step:last-child::after {
+        display: none;
+      }
+
+      .step.completed::after {
+        background-color: #198754;
+      }
+    </style>
+
+    <style>
+      .vertical-stepper {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        position: relative;
+      }
+
+      .step-item {
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+      }
+
+      .step-marker {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #dee2e6;
+        color: #6c757d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        flex-shrink: 0;
+        z-index: 1;
+      }
+
+      .step-details {
+        margin-left: 1rem;
+      }
+
+      .step-title {
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+      }
+
+      .step-item::before {
+        content: "";
+        position: absolute;
+        top: 40px;
+        left: 20px;
+        width: 2px;
+        height: calc(100% - 40px);
+        background-color: #dee2e6;
+        z-index: 0;
+      }
+
+      .step-item:last-child::before {
+        display: none;
+      }
+
+      .step-item.completed .step-marker {
+        background-color: #198754;
+        color: #fff;
+      }
+
+      .step-item.completed::before {
+        background-color: #198754;
+      }
+    </style>
   </head>
   <body id="page-top">
     <!-- Navigation-->
@@ -58,6 +166,21 @@
       </div>
     </header>
 
+    <!-- Steeper -->
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+      <div class="step text-center completed">
+        <div class="circle">1</div>
+        <div class="label">Fill up Form Accordingly</div>
+      </div>
+      <div class="step text-center completed">
+        <div class="circle">2</div>
+        <div class="label">Pick up Suitable Ferry</div>
+      </div>
+      <div class="step text-center">
+        <div class="circle">3</div>
+        <div class="label">Make Payment and Recieve Ticket</div>
+      </div>
+    </div>
     <div class="container mt-4">
       <div class="contianer">
         <h3>Passengers Details</h3>
@@ -225,12 +348,70 @@
             />
           </div>
         </div>
-
-        <!-- Submit Button -->
-        <div class="mt-4 text-end">
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
       </form>
+    </div>
+
+    <!-- Steeper-->
+    <div class="container py-5">
+      <div class="row g-4">
+        <!-- Stepper Column -->
+        <div class="col-lg-6">
+          <div class="vertical-stepper">
+            <div class="step-item completed" id="bookStep">
+              <div class="step-marker">1</div>
+              <div class="step-details">
+                <h5 class="step-title">Booking</h5>
+                <p class="text-muted mb-0">
+                  Select your route and enter passenger details.
+                </p>
+              </div>
+            </div>
+
+            <div class="step-item" id="paymentStep">
+              <div class="step-marker">2</div>
+              <div class="step-details">
+                <h5 class="step-title">Payment</h5>
+                <p class="text-muted mb-0">
+                  Proceed to make your payment securely.
+                </p>
+              </div>
+            </div>
+
+            <div class="step-item" id="confirmStep">
+              <div class="step-marker">3</div>
+              <div class="step-details">
+                <h5 class="step-title">Confirmation</h5>
+                <p class="text-muted mb-0">
+                  Receive your ticket and booking confirmation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Column -->
+        <div class="col-lg-6">
+          <div class="border rounded p-4 h-100 shadow-sm">
+            <h4 class="mb-3">Payment Summary</h4>
+            <p class="mb-2">
+              Ferry Route: <strong>Port Blair to Havelock</strong>
+            </p>
+            <p class="mb-2">Passengers: <strong>2 Adults</strong></p>
+            <p class="mb-2">Date: <strong>20 May 2025</strong></p>
+            <hr />
+            <p class="mb-2">Subtotal: ₹4,000</p>
+            <p class="mb-2">Taxes & Fees: ₹200</p>
+            <hr />
+            <h5>Total: ₹4,200</h5>
+            <button
+              class="btn btn-success mt-3 w-100"
+              onclick=" triggerContactFormSubmit()"
+            >
+              Proceed to Pay
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Footer-->
@@ -264,6 +445,13 @@
     </script>
 
     <script>
+      function triggerContactFormSubmit() {
+        const form = document.getElementById("contactForm");
+
+        // Optional: You can perform validation or other logic here
+
+        form.requestSubmit(); // Triggers form submission programmatically
+      }
       document
         .getElementById("contactForm")
         .addEventListener("submit", function (e) {
@@ -334,9 +522,7 @@
             .then((data) => {
               if (data.status == "success") {
                 console.log(data);
-                alert(
-                  "You Seat has been Booked Pls do make the payement and confirm your booking"
-                );
+                document.getElementById("bookStep").classList.add("completed");
 
                 // Step 1: Get existing bookings from localStorage
                 let bookings =
@@ -360,7 +546,7 @@
                 // Index 6: "1625"     <-- fare
                 let no_of_passenger;
                 if (parts.length >= 3 && parts[1] === "savePassengers") {
-                no_of_passenger = parseInt(parts[2]);
+                  no_of_passenger = parseInt(parts[2]);
                   console.log("No. of passengers:", no_of_passenger);
                 } else {
                   console.warn("URL structure is unexpected or invalid.");
@@ -372,6 +558,13 @@
                 localStorage.setItem("bookings", JSON.stringify(bookings));
 
                 console.log("Booking added!");
+
+                setTimeout(() => {
+                  document
+                    .getElementById("paymentStep")
+                    .classList.add("completed");
+                  confirmBooking(data.data.data.booking_id);
+                }, 1000);
               } else {
                 alert(data.message);
               }
@@ -380,6 +573,50 @@
               console.error("Error submitting data:", error);
             });
         });
+
+      function confirmBooking(booking_id) {
+        fetch(`/confirmBooking/${booking_id}`, {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.status == "success") {
+              // Step 1: Get all bookings from localStorage
+
+              document.getElementById("confirmStep").classList.add("completed");
+
+              const bookings =
+                JSON.parse(localStorage.getItem("bookings")) || [];
+
+              // Step 2: Find the index of the booking to update
+              const index = bookings.findIndex(
+                (item) => item.booking_id == booking_id
+              );
+
+              if (index !== -1) {
+                // Step 3: Update the PNR
+                bookings[index].pnr = result.data.data.pnr;
+
+                localStorage.setItem("bookings", JSON.stringify(bookings));
+
+                setTimeout(() => {
+                  window.location.href = "/";
+                }, 2000);
+              } else {
+                console.warn(
+                  "Booking not found in localStorage for ID:",
+                  booking_id
+                );
+              }
+            } else {
+              alert(result.message); // Show backend message
+            }
+          })
+          .catch((error) => {
+            console.error("Error confirming booking:", error);
+            alert("Something went wrong while confirming your booking.");
+          });
+      }
     </script>
   </body>
 </html>

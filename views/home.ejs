@@ -38,7 +38,56 @@
   }
 }
 
+
     </style>
+
+<style>
+  .step {
+    flex: 1;
+    position: relative;
+  }
+
+  .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #dee2e6;
+    color: #6c757d;
+    line-height: 40px;
+    margin: 0 auto;
+    font-weight: bold;
+  }
+
+  .label {
+    margin-top: 8px;
+    font-size: 0.9rem;
+  }
+
+  .step.completed .circle {
+    background-color: #198754; /* Bootstrap's green */
+    color: white;
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background-color: #dee2e6;
+    z-index: -1;
+  }
+
+  .step:last-child::after {
+    display: none;
+  }
+
+  .step.completed::after {
+    background-color: #198754;
+  }
+</style>
+
   </head>
   <body id="page-top">
     <!-- Navigation -->
@@ -90,6 +139,25 @@
       </div>
     </header>
 
+    <!-- Steeper -->
+     <!-- Stepper Container -->
+<div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+  <div class="step text-center">
+    <div class="circle">1</div>
+    <div class="label">Fill up Form Accordingly</div>
+  </div>
+  <div class="step text-center">
+    <div class="circle">2</div>
+    <div class="label">Pick up Suitable Ferry</div>
+  </div>
+  <div class="step text-center">
+    <div class="circle">3</div>
+    <div class="label">Make Payment and Recieve Ticket</div>
+  </div>
+
+  
+</div>
+
     <!-- Forms -->
 
     <div class="container mt-4">
@@ -105,7 +173,7 @@
             aria-controls="nav-home"
             aria-selected="true"
           >
-            Single Trip
+          Single Trip (One-Way Trip)
           </button>
           <button
             class="nav-link"
@@ -117,7 +185,7 @@
             aria-controls="nav-profile"
             aria-selected="false"
           >
-            Multi Trip
+          Return Trip (Round Trip / Back and Forth)
           </button>
         </div>
       </nav>
@@ -188,21 +256,17 @@
           aria-labelledby="nav-profile-tab"
           tabindex="0"
         >
-          Mulit Trip Form
+  <div class="container mt-2">
+   <p>Working.......................................</p>
+  </div>
         </div>
       </div>
     </div>
     <!-- Forms -->
 
-    <!-- ferry -->
-     <div class="container mt-2" id="ferry">
 
-
-      
-     </div>
-    <!-- ferry -->
-
-
+    
+    
     <!-- Booking Section  -->
     <section id="bookings">
       <div class="container px-4">
@@ -291,147 +355,8 @@
 <script src="/js/scripts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-  function populateModal(ship_id) {
-    // Get the schedule data from localStorage
-    const allSchedulesRaw = JSON.parse(localStorage.getItem("data"));
-    const allSchedules = allSchedulesRaw?.data || allSchedulesRaw; // support both data formats
-
-    if (!allSchedules || !Array.isArray(allSchedules)) {
-      console.log("No schedule data found in localStorage.");
-      return;
-    }
-
-    // Filter schedules for the given ship_id
-    const filtered = allSchedules.filter(schedule => schedule.ship_id === ship_id.toString());
-
-    if (filtered.length === 0) {
-      alert("No data found for this ship ID.");
-      return;
-    }
-
-    // Group by ship_class_title
-    const classes = {
-      Premium: filtered.find(item => item.ship_class_title.toLowerCase() === "premium"),
-      Deluxe: filtered.find(item => item.ship_class_title.toLowerCase() === "deluxe"),
-      Royal: filtered.find(item => item.ship_class_title.toLowerCase() === "royal"),
-    };
 
 
-    
-function createOptions(classes) {
-  let options = '';
-  ['Premium', 'Deluxe', 'Royal'].forEach(type => {
-    if (classes[type]) {
-
-      const { id,  ship_class_id, ship_class_price } = classes[type];
-      const value = `${id}|${ship_class_id}|${ship_class_price}`;
-      options += `<option value="${value}">${type}</option>`;
-
-      
-    }
-  });
-  return options;
-}
-
-
-    // Helper to build card HTML
-    const createCard = (label, data) => {
-      if (!data) {
-        return `
-          <div class="col">
-            <div class="card border-secondary h-100">
-              <div class="card-header">${label}</div>
-              <div class="card-body text-muted">
-                <h5 class="card-title">Not Available</h5>
-                <p class="card-text">This class is not available for this ship.</p>
-              </div>
-            </div>
-          </div>`;
-      }
-
-      return `
-        <div class="col">
-          <div class="card border-primary h-100">
-            <div class="card-header">${label}</div>
-            <div class="card-body text-primary">
-              <h5 class="card-title">${data.ship_title} (${data.display_name})</h5>
-              <p class="card-text">
-                Route: ${data.source_name} ➜ ${data.destination_name}<br>
-                Departure: ${data.departure_time} | Arrival: ${data.arrival_time}<br>
-                Price: ₹${data.ship_class_price}<br>
-                Meal: ${data.is_meal === 'Y' ? 'Included' : 'Not Included'}<br>
-                Seats: ${data.seat}<br>
-                GST: ₹${(data.cgst_amount + data.ugst_amount).toFixed(2)}<br>
-                PSF: ₹${data.psf}
-              </p>
-            </div>
-          </div>
-        </div>`;
-    };
-
-    // Modal template with cards injected
-    const modalHTML = `
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Choose Your Classs</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="container text-center my-3">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                  ${createCard("Premium", classes.Premium)}
-                  ${createCard("Deluxe", classes.Deluxe)}
-                  ${createCard("Royal", classes.Royal)}
-                </div>
-              </div>
-
-
- 
-              
- <select class="form-select" aria-label="Select class" id="classSelect">
-            <option selected disabled>Choose your class</option>
-             ${createOptions(classes)}
-          </select>
-
-          
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="hideModal()">Close</button>
-                <button type="button" class="btn btn-secondary" onclick="Redirect()">Procedd</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-
-    // Remove previous modal
-    const oldModal = document.getElementById('staticBackdrop');
-    if (oldModal) {
-      oldModal.remove();
-    }
-
-    // Append new modal to body
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-    // Show the modal
-    showModal();
-  }
-
-  // These must be global so the modal button can call hideModal()
-  function showModal() {
-    const modalEl = document.getElementById('staticBackdrop');
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
-  }
-
-  function hideModal() {
-    const modalEl = document.getElementById('staticBackdrop');
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    modal.hide();
-  }
-</script>
 
 <script>
   const form = document.getElementById("singleTripForm");
@@ -474,12 +399,11 @@ function createOptions(classes) {
      
       if (result.status === "success") {
         localStorage.setItem("data", JSON.stringify(result.data));
-        appendFerry(); // Call your UI update function
-      }else{
-        const container = document.getElementById("ferry");
-        container.innerHTML="";
-      }
+     
+        window.location.href = "/schedule_search";
 
+      }
+      
     } catch (error) {
       console.error("Error fetching schedule:", error.message);
     }
@@ -503,130 +427,26 @@ function createOptions(classes) {
 
 window.onload = function () {
 
- appendFerry();
+  const lastInput = JSON.parse(localStorage.getItem("lastInput"));
+
+  if (lastInput) {
+    const { date, passengers } = lastInput;
+    if (date && passengers) {
+      document.getElementById("date").value = date;
+      document.getElementById("passengers").value = passengers;
+    }
+  }
+  
  appendBookings();
 };
 
-function appendFerry() {
-  const data = JSON.parse(localStorage.getItem("data"));
-  const lastInput=JSON.parse(localStorage.getItem("lastInput"));
-
-  if(lastInput){
-    const {date,passengers}=lastInput;
-    if(date && passengers){
-    document.getElementById("date").value=date;
-    document.getElementById("passengers").value=passengers;
-  }
-  }
-  
-
-  
-
-
-  
-
-  if (!data || !data.data || data.data.length === 0) {
-    console.log("You have not searched for any ferry schedule yet.");
-    return;
-  }
-
-  const container = document.getElementById("ferry");
-  container.innerHTML="";
-  const renderedShips = new Set(); // To track already-rendered ship_ids
-
-  for (let i = 0; i < data.data.length; i++) {
-    const ferry = data.data[i];
-
-    // Skip if ship_id is already rendered
-    if (renderedShips.has(ferry.ship_id)) {
-      continue;
-    }
-
-    renderedShips.add(ferry.ship_id);
-
-    // Use first image or placeholder
-    const imageUrl = ferry.images && ferry.images.length > 0 
-      ? ferry.images[0] 
-      : "/assets/ferryimage.jpeg";
-
-    const cardHTML = `
-      <div class="card mb-3" style="max-width: 100%;" id="ship-${ferry.ship_id}">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="${imageUrl}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="${ferry.ship_title}">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">${ferry.display_name} (${ferry.ship_title})</h5>
-              <p class="card-text mb-1">
-                <strong>Route:</strong> ${ferry.source_name} 
-                <span class="mx-2">→</span> 
-                ${ferry.destination_name}
-              </p>
-              <p class="card-text mb-1">
-                <strong>Departure:</strong> ${ferry.departure_time} | 
-                <strong>Arrival:</strong> ${ferry.arrival_time}
-              </p>
-              <p class="card-text mb-1">
-                <strong>Operational:</strong> ${ferry.from_date} 
-                <span class="mx-2">→</span> 
-                ${ferry.to_date}
-              </p>
-              <p class="card-text mb-1">
-                <strong>Booking:</strong> ${ferry.booking_start_date} 
-                <span class="mx-2">→</span> 
-                ${ferry.booking_end_date}
-              </p>
-   
-              
-      
-              <br>
-
-              
-
-<button type="button"  onclick="populateModal(${ferry.ship_id})" class="btn btn-outline-primary">Pick up Ferry</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    container.insertAdjacentHTML("beforeend", cardHTML);
-  }
-}
 
 
 
 
-function Redirect() {
-  const select = document.getElementById("classSelect");
-  const selectedValue = select.value;
-  console.log(JSON.parse(localStorage.getItem('lastInput')));
-  const {date,passengers}=JSON.parse(localStorage.getItem('lastInput'))
 
-  
 
-  
 
-  
-
-  if (!selectedValue || !date || !passengers) {
-    alert("Please fill in all fields before proceeding.");
-    return;
-  }
-
-  // Split by "|"
-  const [id, ship_class_id, ship_class_price] = selectedValue.split("|");
-
-  // Validate split values
-  if (!id || !ship_class_id || !ship_class_price) {
-    alert("Invalid class selection. Please try again.");
-    return;
-  }
-
-  // Redirect
-  window.location.href = `/savePassengers/${passengers}/${id}/${date}/${ship_class_id}/${ship_class_price}`;
-}
 
 function appendBookings() {
   const bookings = JSON.parse(localStorage.getItem("bookings"));
@@ -639,10 +459,24 @@ function appendBookings() {
   // If no bookings
   if (!bookings || bookings.length === 0) {
     container.innerHTML = `
-      <div class="alert alert-info text-center" role="alert">
-        You have not made any bookings so far. Go explore and fill up the form to get started!
-      </div>
-    `;
+  <p class="lead">
+    you have not booked any ferry so far , Just fill up form  and explore
+  </p>
+
+  <ul>
+
+    
+    <li>Book tickets online with secure payments</li>
+
+    
+    
+    <li>Download your ticket from your bookings section</li>
+    <li>Cancel your tickets easily if plans change</li>
+    <li>Print your ticket directly from this page as a PDF</li>
+    <li>Your bookings will be displayed here for easy access</li>
+  </ul>
+`;
+
     return;
   }
 
@@ -684,7 +518,7 @@ function appendBookings() {
                 CGST (9%): ${schedule.cgst_amount} <br>
                 UGST (9%): ${schedule.ugst_amount} <br>
                 PSF: ${schedule.psf} <br>
-                Total Price per Passenger: <strong>${
+                Total Price per  Passenger: <strong>${
                   parseFloat(schedule.ship_class_price) +
                   parseFloat(schedule.cgst_amount) +
                   parseFloat(schedule.ugst_amount) +
@@ -700,16 +534,15 @@ function appendBookings() {
               </p>
             </div>
    <div class="col-md-4 text-md-end text-start mt-3 mt-md-0">
-          ${
-            booking.pnr
-              ? `
+      
+    
+       
+    
                 <button class="btn btn-success mb-2" onclick="downloadTicket('${booking.booking_id}')">Download Ticket</button><br>
                 <button class="btn btn-danger mb-2" onclick="cancelBooking(${booking.pnr})">Cancel Booking</button>
-              `
-              : `
-                <button class="btn btn-primary mb-2" onclick="confirmBooking(${booking.booking_id})">Confirm Booking</button><br>
-              `
-          }
+              
+ 
+              
         </div>
           </div>
         </div>
@@ -724,44 +557,8 @@ function appendBookings() {
   });
 
 }
-function confirmBooking(booking_id) {
-  fetch(`/confirmBooking/${booking_id}`, {
-    method: "POST",
-  })
-  .then(response => response.json())
-  .then(result => {
-    console.log(result);
 
-    // Step 1: Get all bookings from localStorage
-    const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
 
-    // Step 2: Find the index of the booking to update
-    const index = bookings.findIndex(item => item.booking_id == booking_id);
-
-    if (index !== -1) {
-      // Step 3: Update the PNR
-      bookings[index].pnr = result.data.data.pnr;
-      console.log(bookings[index])
-
-      // Step 4: Save updated bookings back to localStorage
-      localStorage.setItem("bookings", JSON.stringify(bookings));
-      
-
-      // Optional: re-render UI if needed
-      // appendBookings(); // if you want to reflect the PNR in the card
-
-      appendBookings()
-    } else {
-      console.warn("Booking not found in localStorage for ID:", booking_id);
-    }
-
-    alert(result.message); // Show backend message
-  })
-  .catch(error => {
-    console.error("Error confirming booking:", error);
-    alert("Something went wrong while confirming your booking.");
-  });
-}
 
 function downloadTicket(booking_id) {
   fetch(`/downlaod/${booking_id}`, {

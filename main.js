@@ -166,7 +166,6 @@ app.post("/fetchSchedule", async (req, res) => {
     // if every thing is in perfect working order let's make the request got it
     const token = pickToken();
     const data = await fetchSchedule(token, req.body);
-    console.log(data);
 
     return res.status(200).json({
       status: "success",
@@ -211,10 +210,8 @@ app.post(
       data.data["fare"] = parseFloat(fare);
       data.data["tc_check"] = true;
 
-      console.log(data);
-
       const responseData = await savePassengers(pickToken(), data);
-      console.log(responseData);
+
       return res.status(200).json({
         status: "success",
 
@@ -263,6 +260,7 @@ app.post("/confirmBooking/:booking_id", async (req, res) => {
       data: responseData,
     });
   } catch (error) {
+    console.log(error);
     console.log(error.message);
 
     // Determine error type
@@ -316,8 +314,11 @@ app.post("/downlaod/:booking_id", async (req, res) => {
   }
 });
 
+app.get("/schedule_search", async (req, res) => {
+  return res.render("ferry.ejs");
+});
+
 app.listen(PORT, async () => {
   console.log(`Server started on port ${PORT}`);
   getToken();
-  // updateSectors(pickToken());
 });
